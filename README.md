@@ -1,0 +1,2 @@
+# bankomati
+bankomati

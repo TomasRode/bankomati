@@ -14,13 +14,19 @@ class Bankomat:
         self.stanje += znesek
 
     def dvig(self, racun, znesek):
-        if racun.dvig(znesek) and znesek <= self.stanje:
+        if znesek <= self.stanje:
+            self.stanje -= znesek
+            with open(str(self.lokacija) + ".txt" , "a") as dat:
+                print("dvig, {}, {}, {}".format(racun, znesek, self.stanje))
             return True
         else:
             return False
 
     def polog(self, racun, znesek):
-        if racun.polog(znesek):
+        if znesek >= 0:
+            self.stanje += znesek
+            with open(str(self.lokacija) + ".txt", "a") as dat:
+                print("polog, {}, {}, {}".format(racun, znesek, self.stanje), file=dat)
             return True
         else:
             return False

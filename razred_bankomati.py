@@ -17,7 +17,7 @@ class Bankomat:
         if znesek <= self.stanje:
             self.stanje -= znesek
             with open(str(self.lokacija) + ".txt" , "a") as dat:
-                print("dvig, {}, {}, {}".format(racun, znesek, self.stanje))
+                print("dvig,{},{},{}".format(racun, znesek, self.stanje), file=dat)
             return True
         else:
             return False
@@ -26,7 +26,7 @@ class Bankomat:
         if znesek >= 0:
             self.stanje += znesek
             with open(str(self.lokacija) + ".txt", "a") as dat:
-                print("polog, {}, {}, {}".format(racun, znesek, self.stanje), file=dat)
+                print("polog,{},{},{}".format(print(racun), znesek, self.stanje), file=dat)
             return True
         else:
             return False

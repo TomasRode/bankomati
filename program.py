@@ -2,8 +2,7 @@ from razred_racuni import *
 from razred_bankomati import *
 
 #seznam racunov
-racuni = []
-racuni.extend((Racun(111, 1111), Racun(222, 2222), Racun(333, 3333), Racun(444, 4444)))
+racuni = [Racun(111, 1111), Racun(222, 2222), Racun(333, 3333), Racun(444, 4444)]
 
 #seznam stevilk racunov:
 stevilke_racunov = []
@@ -22,74 +21,111 @@ for bankomat in bankomati:
 
 #################################### FUNKCIJE  ####################################
 def dvig():
-    if racuni[stevilke_racunov.index(int(izbrani_racun))].dvig(vneseni_dvig) and bankomati[lokacije_bankomatov.index(int(izbrani_bankomat))].dvig(vneseni_dvig) and vneseni_pin == racuni[stevilke_racunov.index(int(izbrani_racun))].pin:
-        racuni[stevilke_racunov.index(int(izbrani_racun))].dvig(vneseni_dvig)
-        bankomati[lokacije_bankomatov.index(int(izbrani_bankomat))].dvig(vneseni_dvig)
+    indeks_stevilke = stevilke_racunov.index(izbrani_racun.get())
+    indeks_lokacije = lokacije_bankomatov.index(izbrani_bankomat.get())
+    znesek = vneseni_dvig.get()
+    racun = racuni[indeks_stevilke]
+    bankomat = bankomati[indeks_lokacije]
+    if racun.dvig(znesek) and bankomat.dvig(racun, znesek) and vneseni_pin_dvig.get() == racun.pin:
+        print("uspešno")
+        vnos_pin_dvig.delete(0, "end")
+        return True
     else:
+        print("neuspešno")
+        vnos_pin_dvig.delete(0, "end")
         return False
+
 
 def polog_racun():
-    if racuni[stevilke_racunov.index(int(izbrani_racun))].polog(vneseni_polog):
-        racuni[stevilke_racunov.index(int(izbrani_racun))].polog(vneseni_polog)
+    indeks_stevilke = stevilke_racunov.index(izbrani_racun.get())
+    indeks_lokacije = lokacije_bankomatov.index(izbrani_bankomat.get())
+    znesek = vneseni_polog.get()
+    racun = racuni[indeks_stevilke]
+    bankomat = bankomati[indeks_lokacije]
+    if racun.polog(znesek) and vneseni_pin_polog.get() == racun.pin:
+        print("uspešno")
+        vnos_pin_polog.delete(0, "end")
+        return True
+    else:
+        print("neuspešno")
+        vnos_pin_polog.delete(0, "end")
+        return False
+    
+def nov_racun():
+    if novi_pin == potrdi_pin:
+        racuni.append(Racun(stevilke_racunov[-1] + 1, novi_pin))
+        return True
     else:
         return False
-
-    
 #################################### UPORABNIŠKI VMESNIK ###################################################
 
 import tkinter as tk
+from tkinter import ttk
 
 okno = tk.Tk()
 
-naslov = tk.Label(okno, text='DOBRODOŠLI V SISTEM BANKOMATOV!')
+zvezek = ttk.Notebook(okno)
+z_domov = ttk.Frame(zvezek)
+z_polog = ttk.Frame(zvezek)
+z_dvig = ttk.Frame(zvezek)
+z_nov_racun = ttk.Frame(zvezek)
 
+zvezek.add(z_domov, text="Domov")
+zvezek.add(z_polog, text="Polog")
+zvezek.add(z_dvig, text="Dvig")
+zvezek.add(z_nov_racun, text="Nov Račun")
 
-izberi_racun = tk.Label(okno, text="Izberi račun")
-izbrani_racun = tk.StringVar(okno)
-racuni = tk.OptionMenu(okno, izbrani_racun, *stevilke_racunov)
+naslov = tk.Label(z_domov, text='DOBRODOŠLI V SISTEM BANKE')
+izberi_racun = tk.Label(z_domov, text="Izberi račun")
+izbrani_racun = tk.IntVar(z_domov)
+lista_racuni = tk.OptionMenu(z_domov, izbrani_racun, *stevilke_racunov)
 
-izberi_bankomat = tk.Label(okno, text="Izberi bankomat")
-izbrani_bankomat = tk.StringVar(okno)
-bankomati = tk.OptionMenu(okno, izbrani_bankomat, *lokacije_bankomatov)
+izberi_bankomat = tk.Label(z_domov, text="Izberi bankomat")
+izbrani_bankomat = tk.StringVar(z_domov)
+lista_bankomati = tk.OptionMenu(z_domov, izbrani_bankomat, *lokacije_bankomatov)
 
-polog_naslov = tk.Label(okno, text='POLOG')
-vneseni_polog = tk.DoubleVar(okno)
-vnos_polog = tk.Entry(okno, textvariable=vneseni_polog)
-vnesite_znesek_polog = tk.Label(okno, text="Vnesite znesek v EUR")
-vnesite_pin_polog = tk.Label(okno, text="Vnesite PIN")
-vneseni_pin_polog = tk.DoubleVar(okno)
-vnos_pin_polog = tk.Entry(okno, textvariable=vneseni_pin_polog)
-potrdi_polog = tk.Button(okno, text="POTRDI", command=polog_racun)
+polog_naslov = tk.Label(z_polog, text='POLOG')
+vneseni_polog = tk.DoubleVar(z_polog)
+vnos_polog = tk.Entry(z_polog, textvariable=vneseni_polog, justify="center")
+vnesite_znesek_polog = tk.Label(z_polog, text="Vnesite znesek v EUR")
+vnesite_pin_polog = tk.Label(z_polog, text="Vnesite PIN")
+vneseni_pin_polog = tk.IntVar(z_polog)
+vnos_pin_polog = tk.Entry(z_polog, textvariable=vneseni_pin_polog, show="*")
+potrdi_polog = tk.Button(z_polog, text="POTRDI", command=polog_racun)
 
-dvig_naslov = tk.Label(okno, text="DVIG")
-vneseni_dvig = tk.DoubleVar(okno)
-vnos_dvig = tk.Entry(okno, textvariable=vneseni_dvig)
-vnesite_znesek_dvig = tk.Label(okno, text="Vnesite znesek v EUR")
-vnesite_pin_dvig = tk.Label(okno, text="Vnesite PIN")
-vneseni_pin_dvig = tk.DoubleVar(okno)
-vnos_pin_dvig = tk.Entry(okno, textvariable=vneseni_pin_dvig)
-potrdi_dvig = tk.Button(okno, text="POTRDI", command=dvig)
+dvig_naslov = tk.Label(z_dvig, text="DVIG")
+vneseni_dvig = tk.DoubleVar(z_dvig)
+vnos_dvig = tk.Entry(z_dvig, textvariable=vneseni_dvig)
+vnesite_znesek_dvig = tk.Label(z_dvig, text="Vnesite znesek v EUR")
+vnesite_pin_dvig = tk.Label(z_dvig, text="Vnesite PIN")
+vneseni_pin_dvig = tk.IntVar(z_dvig)
+vnos_pin_dvig = tk.Entry(z_dvig, textvariable=vneseni_pin_dvig, show="*")
+potrdi_dvig = tk.Button(z_dvig, text="POTRDI", command=dvig)
 
-ustvari_racun = tk.Label(okno, text="NOV RAČUN")
-nova_stevilka = tk.Label(okno, text="Številka novega računa je {}".format(stevilke_racunov[-1] + 1))
-nastavite_pin = tk.Label(okno, text="Nastavite PIN")
-potrdite_pin = tk.Label(okno, text="Potrdite PIN")
-vneseni_novi_pin = tk.DoubleVar(okno)
-novi_pin = tk.Entry(okno, textvariable=vneseni_novi_pin)
-vneseni_potrdi_pin = tk.DoubleVar(okno)
-potrdi_pin = tk.Entry(okno, textvariable=vneseni_potrdi_pin)
-ustvari_racun = tk.Button(okno, text="Ustvari račun")
+nov_racun = tk.Label(z_nov_racun, text="NOV RAČUN")
+nova_stevilka = tk.Label(z_nov_racun, text="Številka novega računa je {}".format(stevilke_racunov[-1] + 1))
+nastavite_pin = tk.Label(z_nov_racun, text="Nastavite PIN")
+potrdite_pin = tk.Label(z_nov_racun, text="Potrdite PIN")
+vneseni_novi_pin = tk.IntVar(z_nov_racun)
+novi_pin = tk.Entry(z_nov_racun, textvariable=vneseni_novi_pin, show="*")
+vneseni_potrdi_pin = tk.IntVar(z_nov_racun)
+potrdi_pin = tk.Entry(z_nov_racun, textvariable=vneseni_potrdi_pin, show="*")
+ustvari_racun = tk.Button(z_nov_racun, text="Ustvari račun", command=nov_racun)
+
+# dokapitalizacija = tk.Button(z_nov_racun, text="DOKAPITALIZACIJA")
 
 
 ##SESTAVLJANJE
+
+zvezek.pack()
 
 naslov.grid(column=1, row=1, columnspan=2)
 
 izberi_racun.grid(column=1, row=2)
 izberi_bankomat.grid(column=2, row=2)
 
-racuni.grid(column=1, row=3)
-bankomati.grid(column=2, row=3)
+lista_racuni.grid(column=1, row=3)
+lista_bankomati.grid(column=2, row=3)
 
 polog_naslov.grid(column=1, row=4, columnspan=2)
 
@@ -111,7 +147,7 @@ vnos_pin_dvig.grid(column=2, row=10)
 
 potrdi_dvig.grid(column=1, row=11, columnspan=2)
 
-ustvari_racun.grid(column=1, row=12, columnspan=2)
+nov_racun.grid(column=1, row=12, columnspan=2)
 
 nova_stevilka.grid(column=1, row=13, columnspan=2)
 
@@ -122,5 +158,7 @@ novi_pin.grid(column=1, row=15)
 potrdi_pin.grid(column=2, row=15)
 
 ustvari_racun.grid(column=1, row=16, columnspan=2)
+
+# dokapitalizacija.grid(column=1, row=18, columnspan=2)
 
 okno.mainloop()

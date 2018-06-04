@@ -4,9 +4,9 @@ class Racun:
         self.stanje = 0
         self.pin = pin
         self.stevilka = stevilka
-        with open(str(self.stevilka) + ".txt" , "a") as dat:
-            for vrstica in dat:
-                self.stanje = vrstica.split(",")[-1]
+        #with open(str(self.stevilka) + ".txt" , "a") as dat:
+        #    for vrstica in dat:
+        #        self.stanje = vrstica.split(",")[-1]
 
     def __str__(self):
         return "Račun {} s stanjem {}".format(self.stevilka, self.stanje)

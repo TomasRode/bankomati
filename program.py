@@ -1,6 +1,10 @@
 from razred_racuni import *
 from razred_bankomati import *
 
+#ustvari nov račun, rabiš file z računi
+#da ti bere stanje računa
+#da ti errorje vrže, ko je treba
+
 #seznam racunov
 racuni = [Racun(111, 1111), Racun(222, 2222), Racun(333, 3333), Racun(444, 4444)]
 
@@ -90,16 +94,16 @@ vnos_polog = tk.Entry(z_polog, textvariable=vneseni_polog, justify="center")
 vnesite_znesek_polog = tk.Label(z_polog, text="Vnesite znesek v EUR")
 vnesite_pin_polog = tk.Label(z_polog, text="Vnesite PIN")
 vneseni_pin_polog = tk.IntVar(z_polog)
-vnos_pin_polog = tk.Entry(z_polog, textvariable=vneseni_pin_polog, show="*")
+vnos_pin_polog = tk.Entry(z_polog, textvariable=vneseni_pin_polog, show="*", justify="center")
 potrdi_polog = tk.Button(z_polog, text="POTRDI", command=polog_racun)
 
 dvig_naslov = tk.Label(z_dvig, text="DVIG")
 vneseni_dvig = tk.DoubleVar(z_dvig)
-vnos_dvig = tk.Entry(z_dvig, textvariable=vneseni_dvig)
-vnesite_znesek_dvig = tk.Label(z_dvig, text="Vnesite znesek v EUR")
+vnos_dvig = tk.Entry(z_dvig, textvariable=vneseni_dvig, justify="center")
+vnesite_znesek_dvig = tk.Label(z_dvig, text="Vnesite znesek v EUR", justify="center")
 vnesite_pin_dvig = tk.Label(z_dvig, text="Vnesite PIN")
 vneseni_pin_dvig = tk.IntVar(z_dvig)
-vnos_pin_dvig = tk.Entry(z_dvig, textvariable=vneseni_pin_dvig, show="*")
+vnos_pin_dvig = tk.Entry(z_dvig, textvariable=vneseni_pin_dvig, show="*", justify="center")
 potrdi_dvig = tk.Button(z_dvig, text="POTRDI", command=dvig)
 
 nov_racun = tk.Label(z_nov_racun, text="NOV RAČUN")
@@ -107,9 +111,9 @@ nova_stevilka = tk.Label(z_nov_racun, text="Številka novega računa je {}".form
 nastavite_pin = tk.Label(z_nov_racun, text="Nastavite PIN")
 potrdite_pin = tk.Label(z_nov_racun, text="Potrdite PIN")
 vneseni_novi_pin = tk.IntVar(z_nov_racun)
-novi_pin = tk.Entry(z_nov_racun, textvariable=vneseni_novi_pin, show="*")
+novi_pin = tk.Entry(z_nov_racun, textvariable=vneseni_novi_pin, show="*", justify="center")
 vneseni_potrdi_pin = tk.IntVar(z_nov_racun)
-potrdi_pin = tk.Entry(z_nov_racun, textvariable=vneseni_potrdi_pin, show="*")
+potrdi_pin = tk.Entry(z_nov_racun, textvariable=vneseni_potrdi_pin, show="*", justify="center")
 ustvari_racun = tk.Button(z_nov_racun, text="Ustvari račun", command=nov_racun)
 
 # dokapitalizacija = tk.Button(z_nov_racun, text="DOKAPITALIZACIJA")
